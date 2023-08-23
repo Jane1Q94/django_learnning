@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+}
+
+.content {
+    width: 80%;
+    padding: 20px 80px;
+}
+
+.content a {
+    color: #4CA6E1;
+    text-decoration: none;
+}
+
+.sidebar {
+    width: 20%;
+    margin-left: 20px;
+    right: 0;
+    background-color: #EFEFEF;
+}
+
+.date {
+    color: #DEDDDF;
+    font-style: italic;
+}
