@@ -23,3 +23,11 @@
     color: #DEDDDF;
     font-style: italic;
 }
+
+.pagination .step-links {
+    color: #4CA6E1;
+}
+
+.pagination .current {
+    color: black;
+}
