@@ -31,3 +31,9 @@
 .pagination .current {
     color: black;
 }
+
+.comment {
+    background-color: #EFEFEF;
+    padding: 5px 10px;
+    margin-bottom: 2px;
+}
