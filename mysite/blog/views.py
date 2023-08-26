@@ -1,12 +1,18 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
+from taggit.models import Tag
 from .models import Post
 from .forms import CommenctForm, EmailPostForm
 
 
-def post_list(request):
+def post_list(request, tag_slug=None):
     obj_list = Post.published.all()
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        obj_list = obj_list.filter(tags__in=[tag])
+
     paginator = Paginator(obj_list, 3)
     page = request.GET.get('page')
     try:
@@ -15,7 +21,11 @@ def post_list(request):
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
-    return render(request, 'blog/post/list.html', {'posts': posts, 'page': page})
+    return render(request, 'blog/post/list.html', {
+        'posts': posts,
+        'page': page,
+        'tag': tag
+    })
 
 
 def post_detail(request, year, month, day, post):
@@ -53,6 +63,7 @@ def post_share(request, post_id):
             message = f"Read '{post.title}' at {post_url}\n\n{cd['name']}'s recomments: {cd['comments']}"
             send_mail(subject, message, 'admin@myblog.com', [cd['to']])
             send = True
+            return redirect(post.get_absolute_url())
     else:
         form = EmailPostForm()
     return render(request, 'blog/post/share.html', {'post': post, 'form': form, 'send': send})
