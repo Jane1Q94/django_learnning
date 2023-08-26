@@ -2,6 +2,8 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
 from taggit.models import Tag
+
+from .utils import get_post_similar_posts
 from .models import Post
 from .forms import CommenctForm, EmailPostForm
 
@@ -32,6 +34,7 @@ def post_detail(request, year, month, day, post):
     post: Post = get_object_or_404(Post, slug=post, status='published',
                                    publish__year=year, publish__month=month, publish__day=day)
     comments = post.comments.filter(active=True)
+    similar_posts = get_post_similar_posts(post)
     new_comment = False
     if request.method == 'POST':
         comment_form = CommenctForm(data=request.POST)
@@ -47,7 +50,8 @@ def post_detail(request, year, month, day, post):
         'post': post,
         'comments': comments,
         'comment_form': comment_form,
-        'new_comment': new_comment
+        'new_comment': new_comment,
+        'similar_posts': similar_posts
     })
 
 
