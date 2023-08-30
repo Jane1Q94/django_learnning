@@ -15,8 +15,14 @@
 .sidebar {
     width: 20%;
     margin-left: 20px;
+    padding: 20px;
     right: 0;
     background-color: #EFEFEF;
+}
+
+.sidebar a {
+    color: #4CA6E1;
+    text-decoration: none;
 }
 
 .date {
